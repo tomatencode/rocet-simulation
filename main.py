@@ -9,7 +9,6 @@ tps = 60  # Steps per second
 m = 0.2  # [kg] Rocket mass (without fuel)
 r_rocket = 0.03  # [m] Rocket radius
 r_parachute = 0.1  # [m] Parachute radius
-t_parachute = 5  # [s] Parachute deploy time
 
 # Thrust function
 def thrust(t):
@@ -65,8 +64,10 @@ for step in range(sim_len * tps):
 
     f_motor, m_motor = thrust(t)
 
-    # Check if the parachute is deployd
-    parachute = t > t_parachute
+    if f_motor == 0 and v < -1:
+        parachute = True
+    else:
+        parachute = False
 
     f_drag = drag(v, parachute)
     f_net = f_drag + f_motor
